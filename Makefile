@@ -7,11 +7,11 @@ SRCS =	SRCS/ft_strlen.s \
 		SRCS/ft_read.s \
 		SRCS/ft_strdup.s \
 
-SRCS_BONUS = 
+SRCS_BONUS = SRCS_BONUS/ft_atoi_base_bonus.s \
 
 OBJ = $(patsubst SRCS/%.s,OBJS/%.o,$(SRCS))
 
-OBJ_BONUS = $(patsubst SRCS/%.s,OBJS/%.o,$(SRCS_BONUS))
+OBJ_BONUS = $(patsubst SRCS_BONUS/%.s,OBJS_BONUS/%.o,$(SRCS_BONUS))
 
 FLAGS = -f elf64
 
@@ -24,19 +24,26 @@ OBJS/%.o: SRCS/%.s
 	mkdir -p OBJS
 	nasm $(FLAGS) $< -o $@
 
+OBJS_BONUS/%.o: SRCS_BONUS/%.s
+	mkdir -p OBJS_BONUS
+	nasm $(FLAGS) $< -o $@
+
 clean:
-	rm -rf OBJS
+	rm -rf OBJS OBJS_BONUS
 
 fclean: clean
 	rm -rf $(NAME)
-	rm a.out
 
 re: fclean all
 
-test: re
+test: re bonus
 	cc main.c $(NAME)
 	@clear
 	./a.out
+
+debug: re bonus
+	cc -g main.c $(NAME) -o a.out
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out
 
 bonus:: all $(OBJ_BONUS)
 	ar rcs $(NAME) $(OBJ) $(OBJ_BONUS)

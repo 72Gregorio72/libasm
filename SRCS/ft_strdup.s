@@ -21,6 +21,9 @@ ft_strdup:
 	mov rdi, rcx
 	call malloc
 
+	test rax, rax
+	jz .err_end
+
 	add rsp, 8
 	pop rcx
 	pop rdi
@@ -34,6 +37,10 @@ ft_strdup:
 	je .end_strcpy
 	inc rdx
 	jmp .loop_strcpy
+
+.err_end:
+	xor rax, rax
+	ret
 
 .end_strcpy:
 	ret
