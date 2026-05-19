@@ -20,6 +20,7 @@ extern char *ft_strdup(char *);
 extern int ft_atoi_base(char *, char *);
 extern int ft_list_size(t_list *begin_list);
 extern void ft_list_push_front(t_list **begin_list, void *data);
+extern void ft_list_sort(t_list **begin_list, int (*cmp)());
 
 // void read_test() {
 // 	int fd = open("file.txt", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
@@ -98,7 +99,20 @@ void list_push_front_test() {
 	free_list(list);
 }
 
+void list_sort_test() {
+	t_list *list = NULL;
+	ft_list_push_front(&list, "b");
+	ft_list_push_front(&list, "a");
+	ft_list_push_front(&list, "c");
+	printf("Before sorting:\n");
+	print_list(list);
+	ft_list_sort(&list, (int (*)(void *, void *))strcmp);
+	printf("After sorting:\n");
+	print_list(list);
+	free_list(list);
+}
+
 int main() {
-	list_push_front_test();
+	list_sort_test();
     return 0;
 }

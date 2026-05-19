@@ -3,6 +3,7 @@ section .text
 
 ft_atoi_base:
 	xor rcx, rcx
+	push r12
 
 .check_base:
 	mov r8b, byte[rsi + rcx]
@@ -84,6 +85,7 @@ ft_atoi_base:
 
 .parse_done:
 	imul rax, r9
+	pop r12
 	ret
 
 .skip_next:
@@ -101,6 +103,7 @@ ft_atoi_base:
 
 .end_err:
 	xor rax, rax
+	pop r12
 	ret
 
 .check_duplicate:
