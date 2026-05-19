@@ -7,7 +7,9 @@ SRCS =	SRCS/ft_strlen.s \
 		SRCS/ft_read.s \
 		SRCS/ft_strdup.s \
 
-SRCS_BONUS = SRCS_BONUS/ft_atoi_base_bonus.s \
+SRCS_BONUS =	SRCS_BONUS/ft_atoi_base_bonus.s \
+				SRCS_BONUS/ft_list_size.s \
+				SRCS_BONUS/ft_list_push_front.s \
 
 OBJ = $(patsubst SRCS/%.s,OBJS/%.o,$(SRCS))
 

@@ -32,24 +32,68 @@ ft_atoi_base:
 	cmp rcx, 2
 	jl .end_err
 
-.skip_spaces:
+	mov r10, rcx
+	mov rdx, 1
 	xor rcx, rcx
 	xor r8b, r8b
-	xor rdx, rdx
-	mov r8b, byte[rdi, rcx]
+
+.skip_spaces:
+    mov r8b, byte[rdi + rcx]
+
+    cmp r8b, 32
+    je .skip_next
+
+    cmp r8b, 43
+    je .skip_next
+
+    cmp r8b, 45
+    je .negate_flag
+
+	mov r9, rdx
+
+.parse_number:
+	xor rax, rax
+
+.parse_loop:
+	mov r8b, byte[rdi + rcx]
+	cmp r8b, 0
+	je .parse_done
+
+	xor r11, r11
+
+.find_in_base:
+	mov r12b, byte[rsi + r11]
+	cmp r12b, 0
+	je .char_not_found
+
+	cmp r8b, r12b
+	je .char_found
+
+	inc r11
+	jmp .find_in_base
+
+.char_found:
+	imul rax, r10
+	add rax, r11
 
 	inc rcx
-	cmp r8b, 32
-	je .skip_spaces
+	jmp .parse_loop
 
-	cmp r8b, 43
-	je .skip_spaces
+.char_not_found:
+	jmp .parse_done
 
-	cmp r8b, 45
-	je .increment_skip
-
-	mov rax, rdx
+.parse_done:
+	imul rax, r9
 	ret
+
+.skip_next:
+    inc rcx
+    jmp .skip_spaces
+
+.negate_flag:
+    neg rdx
+    inc rcx
+    jmp .skip_spaces
 
 .increment_skip:
 	inc rdx
