@@ -11,6 +11,7 @@ SRCS_BONUS =	SRCS_BONUS/ft_atoi_base_bonus.s \
 				SRCS_BONUS/ft_list_size.s \
 				SRCS_BONUS/ft_list_push_front.s \
 				SRCS_BONUS/ft_list_sort.s \
+				SRCS_BONUS/ft_list_remove_if.s \
 
 OBJ = $(patsubst SRCS/%.s,OBJS/%.o,$(SRCS))
 
@@ -36,6 +37,7 @@ clean:
 
 fclean: clean
 	rm -rf $(NAME)
+	rm -rf a.out
 
 re: fclean all
 
@@ -48,7 +50,7 @@ debug: re bonus
 	cc -g main.c $(NAME) -o a.out
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out
 
-bonus:: all $(OBJ_BONUS)
+bonus: all $(OBJ_BONUS)
 	ar rcs $(NAME) $(OBJ) $(OBJ_BONUS)
 
 .SILENT: all clean fclean re
